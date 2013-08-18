@@ -45,7 +45,7 @@ def CATEGORIES():
         fav.add_my_fav_directory(img=os.path.join(art,''))
         addDir('Search','http://www.thedarewall.com/tv/',15,'',None,'')
         addDir('Radio','http://www.thedarewall.com/mp3/radio.php',302,'http://www.thedarewall.com/mp3/images/bgcont.png',None,'')
-        addDir('Settings',309,'',None,'')
+        addDir('Settings','http://',309,'',None,'')
 
 def MOVIES():
         addDir('Latest Updated','http://www.thedarewall.com/tv/new-movies',5,'',None,'')
