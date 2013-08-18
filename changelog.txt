@@ -1,0 +1,3 @@
+v0.1 - initial beta version
+v0.2 - added TV-Shows, fixed more links
+v0.3 - added Radio Stations
