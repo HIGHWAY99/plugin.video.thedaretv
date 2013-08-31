@@ -101,7 +101,7 @@ def SEARCHTV(url):
                 search = keyb.getText()
                 encode=urllib.quote(search)
                 encode = encode.replace('%20', '+')
-                print encode#menu=search&query=Game+of+Thrones
+                print encode
                 data = net.http_POST(url,{'menu' : 'search', 'query' : encode}).content
                 match=re.compile('<h5>.+?<a class="link" href="(.+?)" title="(.+?)">.+?</h5>',re.DOTALL).findall(data)  
                 for url,name in match:
