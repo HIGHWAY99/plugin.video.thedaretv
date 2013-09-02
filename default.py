@@ -6,7 +6,7 @@ from universal import favorites
 from universal import _common as univ_common
 from thedareradio import *
 
-#www.thedarewall.com (The Dare TV) - by The_Silencer 2013 v0.3
+#www.thedarewall.com (The Dare TV) - by The_Silencer 2013 v0.4
 
 
 grab = metahandlers.MetaData(preparezip = False)
@@ -29,7 +29,7 @@ def GRABMETA(name,types):
                         meta = grab.get_meta('movie',name,'',None,None,overlay=6)
                         infoLabels = {'rating': meta['rating'],'duration': meta['duration'],'genre': meta['genre'],'mpaa':"rated %s"%meta['mpaa'],
                           'plot': meta['plot'],'title': meta['title'],'writer': meta['writer'],'cover_url': meta['cover_url'],
-                          'director': meta['director'],'cast': meta['cast'],'backdrop_url': meta['backdrop_url'],'tmdb_id': meta['tmdb_id'],'year': meta['year']}
+                          'director': meta['director'],'cast': meta['cast'],'backdrop_url': meta['backdrop_url'],'backdrop_url': meta['backdrop_url'],'tmdb_id': meta['tmdb_id'],'year': meta['year']}
                 elif 'tvshow' in type:
                         meta = grab.get_meta('tvshow',name,'','',None,overlay=6)
                         infoLabels = {'rating': meta['rating'],'genre': meta['genre'],'mpaa':"rated %s"%meta['mpaa'],
@@ -56,6 +56,12 @@ def MOVIES():
 def TV():
         addDir('Latest Updated','http://www.thedarewall.com/tv/new-shows',17,'',None,'')
         addDir('A-Z','http://www.thedarewall.com/tv/tv-shows',10,'',None,'')
+        #addDir('A-Z (abc)','http://www.thedarewall.com/tv/tv-shows/abc',10,'',None,'') ## might need to be done like TVAZ() after a-z is chosen.
+        #addDir('A-Z (date)','http://www.thedarewall.com/tv/tv-shows/date',10,'',None,'')
+        #addDir('A-Z (imdb)','http://www.thedarewall.com/tv/tv-shows/imdb_rating',10,'',None,'')
+        addDir('All (abc)','http://www.thedarewall.com/tv/tv-shows/abc',11,'',None,'')
+        addDir('All (date)','http://www.thedarewall.com/tv/tv-shows/date',11,'',None,'')
+        addDir('All (imdb)','http://www.thedarewall.com/tv/tv-shows/imdb_rating',11,'',None,'')
         addDir('Search','http://www.thedarewall.com/tv/index.php',16,'',None,'')
 
 #regex for A-Z list
@@ -128,7 +134,8 @@ def INDEX1(url):
 def INDEX2(url):
         EnableMeta = local.getSetting('Enable-Meta')
         match=re.compile('<a class="link" href="(.+?)" title="(.+?)">.+?</a>.+?<p class="left">(.+?)</p>',re.DOTALL).findall(net.http_GET(url).content)
-        nextpage=re.search('<li class=\'current\'>.+?<li><a href="(.+?)">&raquo;</a></li>',(net.http_GET(url).content))
+        #nextpage=re.search('<li class=\'current\'>.+?<li><a href="(.+?)">&raquo;</a></li>',(net.http_GET(url).content))
+        nextpage=re.search('</a></li>\s*<li><a href="(http://[0-9A-Za-z\-\_/\.]+)">&raquo;</a></li>',(net.http_GET(url).content))
         for url,name,extra in match:
                 if EnableMeta == 'true':
                         addDir("%s ~ %s"%(name.encode('UTF-8','ignore'),extra),url,6,'','tvshow','TV-Shows')
@@ -136,13 +143,14 @@ def INDEX2(url):
                         addDir(name.encode('UTF-8','ignore'),url,6,'',None,'TV-Shows')
         if nextpage:
                 url = nextpage.group(1)
-                addDir('[B][COLOR yellow]Next Page >>>[/COLOR][/B]',url,5,'',None,'')
+                addDir('[B][COLOR yellow]Next Page >>>[/COLOR][/B]',url,7,'',None,'')
 
 #regex for TV-Shows            
 def INDEX3(url):
         EnableMeta = local.getSetting('Enable-Meta')
         match=re.compile('<h5>.+?<a class="link" href="(.+?)" title="(.+?)">.+?</a>.+?</h5>',re.DOTALL).findall(net.http_GET(url).content)
-        nextpage=re.search('<li class=\'current\'>.+?<li><a href="(.+?)">&raquo;</a></li>',(net.http_GET(url).content))
+        #nextpage=re.search('<li class=\'current\'>.+?<li><a href="(.+?)">&raquo;</a></li>',(net.http_GET(url).content))  ## didn't work
+        nextpage=re.search('</a></li>\s*<li><a href="(http://[0-9A-Za-z\-\_/\.]+)">&raquo;</a></li>',(net.http_GET(url).content))  ## working fix
         for url,name in match:
                 if EnableMeta == 'true':
                         addDir(name.encode('UTF-8','ignore'),url,12,'','tvshows','TV-Shows')
@@ -150,7 +158,7 @@ def INDEX3(url):
                         addDir(name.encode('UTF-8','ignore'),url,12,'',None,'TV-Shows')
         if nextpage:
                 url = nextpage.group(1)
-                addDir('[B][COLOR yellow]Next Page >>>[/COLOR][/B]',url,5,'',None,'')
+                addDir('[B][COLOR yellow]Next Page >>>[/COLOR][/B]',url,11,'',None,'')
 
 #regex for seasons
 def SEASONS(url):
@@ -248,6 +256,8 @@ def addDir(name,url,mode,iconimage,types,favtype):
         u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
         liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=img)
         liz.setInfo( type="Video", infoLabels= infoLabels)
+        try: liz.setProperty( "Fanart_Image", infoLabels['backdrop_url'] )
+        except: t=''
 
         contextMenuItems = []
         contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
