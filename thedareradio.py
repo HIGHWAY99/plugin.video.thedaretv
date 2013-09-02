@@ -40,12 +40,24 @@ def RadioPlay(url): ### mode=300
 
 ##### Common Functions #####
 def eod(): addon.end_of_directory()
+def addst(r,s=''): return addon.get_setting(r)   ## Get Addon Settings
+def addpr(r,s=''): return addon.queries.get(r,s) ## Get Addon Params
+def tfalse(r,d=False): ## Get True / False
+	if   (r.lower()=='true' ): return True
+	elif (r.lower()=='false'): return False
+	else: return d
 def set_view(content='none',view_mode=50):
 	h=int(sys.argv[1])
-	if (content is not 'none'): xbmcplugin.setContent(h, content)
-	### set content type so library shows more views and info
-	#if (tfalse(addst("auto-view"))==True):
-	#	xbmc.executebuiltin("Container.SetViewMode(%s)" % view_mode)
+	if (content is not 'none'): xbmcplugin.setContent(h, content) ### set content type so library shows more views and info
+	if (tfalse(addst('auto-view'))==True):
+		if (content=='movies'):					view_mode=addst('movies-view')
+		elif (content=='tvshows'):			view_mode=addst('tvshows-view')
+		elif (content=='seasons'):			view_mode=addst('season-view')
+		elif (content=='episodes'):			view_mode=addst('episode-view')
+		elif (content=='links'):				view_mode=addst('links-view')
+		elif (content=='list'):					view_mode=addst('default-view')
+		else:														view_mode=addst('default-view')
+		xbmc.executebuiltin("Container.SetViewMode(%s)" % view_mode)
 ##### /\ ##### Common Functions #####
 
 

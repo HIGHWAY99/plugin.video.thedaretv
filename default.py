@@ -6,7 +6,7 @@ from universal import favorites
 from universal import _common as univ_common
 from thedareradio import *
 
-#www.thedarewall.com (The Dare TV) - by The_Silencer 2013 v0.4
+#www.thedarewall.com (The Dare TV) - by The_Silencer 2013 v0.5.0
 
 
 grab = metahandlers.MetaData(preparezip = False)
@@ -129,6 +129,7 @@ def INDEX1(url):
         if nextpage:
                 url = nextpage.group(1)
                 addDir('[B][COLOR yellow]Next Page >>>[/COLOR][/B]',url,5,'',None,'')
+        set_view('movies')
 
 #regex for latest TV-Shows            
 def INDEX2(url):
@@ -144,6 +145,7 @@ def INDEX2(url):
         if nextpage:
                 url = nextpage.group(1)
                 addDir('[B][COLOR yellow]Next Page >>>[/COLOR][/B]',url,7,'',None,'')
+        set_view('episodes')
 
 #regex for TV-Shows            
 def INDEX3(url):
@@ -159,6 +161,7 @@ def INDEX3(url):
         if nextpage:
                 url = nextpage.group(1)
                 addDir('[B][COLOR yellow]Next Page >>>[/COLOR][/B]',url,11,'',None,'')
+        set_view('tvshows')
 
 #regex for seasons
 def SEASONS(url):
@@ -167,12 +170,14 @@ def SEASONS(url):
         match = re.findall(pattern,str(data))
         for url,name in match:
                 addDir(name.encode('UTF-8','ignore'),url,13,'',None,'TV-Shows')
+        set_view('seasons')
 
 #regex for episodes
 def EPISODES(url):
         match = re.compile('<h5 class="left">.+?<a class="link" href="(.+?)" title="(.+?)">.+?</h5>',re.DOTALL).findall(net.http_GET(url).content)
         for url,name in match:
                 addDir(name.encode('UTF-8','ignore'),url,6,'',None,'TV-Shows')
+        set_view('episodes')
                         
 #regex for Hoster links
 def VIDEOLINKS(url):

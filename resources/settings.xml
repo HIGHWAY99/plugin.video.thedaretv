@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-    
 <settings>
-        <category label="General Settings">
-	<setting id="Enable-Meta" type="bool" label="Enable Metadata" default="true"/>
-</category>
+	<category label="General Settings">
+		<setting id="Enable-Meta" type="bool" label="Enable Metadata" default="true"/>
+	</category>
+	<category label="Auto-View">
+		<setting id="auto-view" type="bool"   label="Enable Automatic View" default="false"/>
+		<setting id="default-view"   type="number" label="Default"               default="50"   enable="!eq(-1,false)"/>
+		<setting id="movies-view"    type="number" label="Movies"                default="515"  enable="!eq(-2,false)"/>
+		<setting id="tvshows-view"   type="number" label="TV Shows"              default="515"  enable="!eq(-3,false)"/>
+		<setting id="season-view"    type="number" label="Seasons"               default="50"   enable="!eq(-4,false)"/>
+		<setting id="episode-view"   type="number" label="Episodes"              default="515"  enable="!eq(-5,false)"/>
+		<setting id="links-view"   	 type="number" label="Links"              	 default="50"   enable="!eq(-6,false)" visible="false"/>
+		<setting id="radio-view"   	 type="number" label="Radio Stations"        default="50"   enable="!eq(-7,false)" visible="false"/>
+		<setting id="radio2-view"    type="number" label="Radio Categories"      default="50"   enable="!eq(-8,false)" visible="false"/>
+	</category>
 </settings>
