@@ -58,6 +58,10 @@ def set_view(content='none',view_mode=50):
 		elif (content=='list'):					view_mode=addst('default-view')
 		else:														view_mode=addst('default-view')
 		xbmc.executebuiltin("Container.SetViewMode(%s)" % view_mode)
+_artPath=xbmc.translatePath(os.path.join(daretvpath,'art'))
+def art_(f,fo='',fe='.png'): 
+	if (fo is not ''): return xbmc.translatePath(os.path.join(os.path.join(_artPath,fo),f+fe))
+	else: return xbmc.translatePath(os.path.join(_artPath,f+fe))
 ##### /\ ##### Common Functions #####
 
 
